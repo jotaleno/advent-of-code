@@ -11,6 +11,18 @@ const FILE_NAME = "input.txt"
 const MIN_ASCII = 48
 const MAX_ASCII = 57
 
+var mapValues = map[string]byte{
+	"one":   49,
+	"two":   50,
+	"three": 51,
+	"four":  52,
+	"five":  53,
+	"six":   54,
+	"seven": 55,
+	"eight": 56,
+	"nine":  57,
+}
+
 func main() {
 	f, err := os.ReadFile(FILE_NAME)
 
@@ -39,26 +51,48 @@ func totalScore(puzzle string) int {
 
 func score(input string) int {
 	var calibrationValue int
-	var firstByte byte
-	var lastByte byte
 
 	inputLen := len(input)
 
 	if inputLen > 0 {
-		counter := 0
+		var firstByte byte
 
-		for firstByte == 0 || lastByte == 0 {
-			fByte := input[counter]
-			lByte := input[inputLen-counter-1]
+		var lastByte byte
 
-			if firstByte == 0 && isByteANumber(fByte) {
-				firstByte = fByte
+		for i := 0; firstByte == 0 || lastByte == 0; i++ {
+			fByte := input[i]
+			lByte := input[inputLen-i-1]
+
+			if firstByte == 0 {
+				if isByteANumber(fByte) {
+					firstByte = fByte
+				} else {
+					possibleKey := findPossibleKey(input, i, false)
+
+					if possibleKey != "" {
+						val := isStringANumber(possibleKey)
+
+						if val > 0 {
+							firstByte = val
+						}
+					}
+				}
 			}
-			if lastByte == 0 && isByteANumber(lByte) {
-				lastByte = lByte
-			}
+			if lastByte == 0 {
+				if isByteANumber(lByte) {
+					lastByte = lByte
+				} else {
+					possibleKey := findPossibleKey(input, i, true)
 
-			counter++
+					if possibleKey != "" {
+						val := isStringANumber(possibleKey)
+
+						if val > 0 {
+							lastByte = val
+						}
+					}
+				}
+			}
 		}
 
 		code := fmt.Sprintf("%c%c", firstByte, lastByte)
@@ -81,4 +115,51 @@ func isByteANumber(char byte) bool {
 	} else {
 		return false
 	}
+}
+
+func isStringANumber(str string) byte {
+	value, ok := mapValues[str]
+
+	if ok {
+		return value
+	} else {
+		return 0
+	}
+}
+
+func findPossibleKey(s string, start int, isReversed bool) string {
+	var found string
+
+	for key := range mapValues {
+		currLen := 0
+
+		if !isReversed {
+			for i := 0; i < len(key); i++ {
+				if s[start+i] == key[i] {
+					currLen++
+				} else {
+					break
+				}
+			}
+
+			if currLen == len(key) {
+				found = s[start : start+currLen]
+				break
+			}
+		} else {
+			for i := 0; i < len(key); i++ {
+				if s[len(s)-start-1-i] == key[len(key)-i-1] {
+					currLen++
+				} else {
+					break
+				}
+			}
+
+			if currLen == len(key) {
+				found = s[len(s)-len(key)-start : len(s)-start]
+				break
+			}
+		}
+	}
+	return found
 }

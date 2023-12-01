@@ -11,20 +11,32 @@ func TestScore(t *testing.T) {
 		expected int
 	}{
 		{
-			input:    "1abc2",
-			expected: 12,
+			input:    "two1nine",
+			expected: 29,
 		},
 		{
-			input:    "pqr3stu8vwx",
-			expected: 38,
+			input:    "eightwothree",
+			expected: 83,
 		},
 		{
-			input:    "a1b2c3d4e5f",
-			expected: 15,
+			input:    "abcone2threexyz",
+			expected: 13,
 		},
 		{
-			input:    "treb7uchet",
-			expected: 77,
+			input:    "xtwone3four",
+			expected: 24,
+		},
+		{
+			input:    "4nineeightseven2",
+			expected: 42,
+		},
+		{
+			input:    "zoneight234",
+			expected: 14,
+		},
+		{
+			input:    "7pqrstsixteen",
+			expected: 76,
 		},
 	}
 
