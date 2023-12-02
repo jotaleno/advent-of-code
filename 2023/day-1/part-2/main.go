@@ -8,8 +8,6 @@ import (
 )
 
 const FILE_NAME = "input.txt"
-const MIN_ASCII = 48
-const MAX_ASCII = 57
 
 var mapValues = map[string]byte{
 	"one":   49,
@@ -110,7 +108,7 @@ func score(input string) int {
 }
 
 func isByteANumber(char byte) bool {
-	if char >= MIN_ASCII && char <= MAX_ASCII {
+	if char >= '0' && char <= '9' {
 		return true
 	} else {
 		return false

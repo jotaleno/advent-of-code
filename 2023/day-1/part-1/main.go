@@ -8,8 +8,6 @@ import (
 )
 
 const FILE_NAME = "input.txt"
-const MIN_ASCII = 48
-const MAX_ASCII = 57
 
 func main() {
 	f, err := os.ReadFile(FILE_NAME)
@@ -45,11 +43,9 @@ func score(input string) int {
 	inputLen := len(input)
 
 	if inputLen > 0 {
-		counter := 0
-
-		for firstByte == 0 || lastByte == 0 {
-			fByte := input[counter]
-			lByte := input[inputLen-counter-1]
+		for i := 0; firstByte == 0 || lastByte == 0; i++ {
+			fByte := input[i]
+			lByte := input[inputLen-i-1]
 
 			if firstByte == 0 && isByteANumber(fByte) {
 				firstByte = fByte
@@ -57,8 +53,6 @@ func score(input string) int {
 			if lastByte == 0 && isByteANumber(lByte) {
 				lastByte = lByte
 			}
-
-			counter++
 		}
 
 		code := fmt.Sprintf("%c%c", firstByte, lastByte)
@@ -76,7 +70,7 @@ func score(input string) int {
 }
 
 func isByteANumber(char byte) bool {
-	if char >= MIN_ASCII && char <= MAX_ASCII {
+	if char >= '0' && char <= '9' {
 		return true
 	} else {
 		return false
