@@ -9,6 +9,39 @@ import (
 
 const FILE_NAME = "input.txt"
 
+type direction struct {
+	dY int
+	dX int
+}
+
+var directions = []direction{
+	{
+		dY: 1,
+		dX: 0,
+	}, {
+		dY: 1,
+		dX: 1,
+	}, {
+		dY: 0,
+		dX: 1,
+	}, {
+		dY: 1,
+		dX: 0,
+	}, {
+		dY: 1,
+		dX: 0,
+	}, {
+		dY: 1,
+		dX: 0,
+	}, {
+		dY: 1,
+		dX: 0,
+	}, {
+		dY: 1,
+		dX: 0,
+	},
+}
+
 func main() {
 	f, err := os.ReadFile(FILE_NAME)
 
@@ -74,63 +107,18 @@ func getNumber(line string, x int) string {
 
 func isAdjacentToSymbols(puzzle []string, y int, xStart int, xEnd int, yLen int, xLen int) bool {
 	for x := xStart; x <= xEnd; x++ {
-		// up
-		if y-1 >= 0 {
-			if !isSymbol(puzzle[y-1][x]) {
-				return true
+		for j := -1; j <= 1; j++ {
+			for i := -1; i <= 1; i++ {
+				if j != 0 || i != 0 {
+					if y+j >= 0 && y+j < yLen && x+i >= 0 && x+i < xLen {
+						if !isSymbol(puzzle[y+j][x+i]) {
+							return true
+						}
+					}
+				}
 			}
 		}
-		// up right
-		if x+1 < xLen && y-1 >= 0 {
-			if !isSymbol(puzzle[y-1][x+1]) {
-				return true
-			}
-		}
-
-		// right
-		if x+1 < xLen {
-			if !isSymbol(puzzle[y][x+1]) {
-				return true
-			}
-		}
-
-		// down right
-		if x+1 < xLen && y+1 < yLen {
-			if !isSymbol(puzzle[y+1][x+1]) {
-				return true
-			}
-		}
-
-		// down
-		if y+1 < yLen {
-			if !isSymbol(puzzle[y+1][x]) {
-				return true
-			}
-		}
-
-		// down left
-		if x-1 >= 0 && y+1 < yLen {
-			if !isSymbol(puzzle[y+1][x-1]) {
-				return true
-			}
-		}
-
-		// left
-		if x-1 >= 0 {
-			if !isSymbol(puzzle[y][x-1]) {
-				return true
-			}
-		}
-
-		// up left
-		if x-1 >= 0 && y-1 >= 0 {
-			if !isSymbol(puzzle[y-1][x-1]) {
-				return true
-			}
-		}
-
 	}
-
 	return false
 }
 
