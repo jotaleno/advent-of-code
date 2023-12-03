@@ -9,39 +9,6 @@ import (
 
 const FILE_NAME = "input.txt"
 
-type direction struct {
-	dY int
-	dX int
-}
-
-var directions = []direction{
-	{
-		dY: 1,
-		dX: 0,
-	}, {
-		dY: 1,
-		dX: 1,
-	}, {
-		dY: 0,
-		dX: 1,
-	}, {
-		dY: 1,
-		dX: 0,
-	}, {
-		dY: 1,
-		dX: 0,
-	}, {
-		dY: 1,
-		dX: 0,
-	}, {
-		dY: 1,
-		dX: 0,
-	}, {
-		dY: 1,
-		dX: 0,
-	},
-}
-
 func main() {
 	f, err := os.ReadFile(FILE_NAME)
 
