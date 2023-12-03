@@ -65,7 +65,7 @@ func getNumber(line string, x int) string {
 	curr := x
 
 	for curr < len(line) && isNumber(line[curr]) {
-		number = fmt.Sprintf("%s%c", number, line[curr])
+		number = line[x : curr+1]
 		curr++
 	}
 
