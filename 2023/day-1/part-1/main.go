@@ -42,28 +42,26 @@ func score(input string) int {
 
 	inputLen := len(input)
 
-	if inputLen > 0 {
-		for i := 0; firstByte == 0 || lastByte == 0; i++ {
-			fByte := input[i]
-			lByte := input[inputLen-i-1]
+	for i := 0; firstByte == 0 || lastByte == 0; i++ {
+		fByte := input[i]
+		lByte := input[inputLen-i-1]
 
-			if firstByte == 0 && isByteANumber(fByte) {
-				firstByte = fByte
-			}
-			if lastByte == 0 && isByteANumber(lByte) {
-				lastByte = lByte
-			}
+		if firstByte == 0 && isByteANumber(fByte) {
+			firstByte = fByte
 		}
-
-		code := fmt.Sprintf("%c%c", firstByte, lastByte)
-
-		codeInt, err := strconv.Atoi(code)
-
-		if err != nil {
-			fmt.Printf("Could not convert string to int: %s\n", code)
-		} else {
-			calibrationValue = codeInt
+		if lastByte == 0 && isByteANumber(lByte) {
+			lastByte = lByte
 		}
+	}
+
+	code := fmt.Sprintf("%c%c", firstByte, lastByte)
+
+	codeInt, err := strconv.Atoi(code)
+
+	if err != nil {
+		fmt.Printf("Could not convert string to int: %s\n", code)
+	} else {
+		calibrationValue = codeInt
 	}
 
 	return calibrationValue

@@ -52,56 +52,54 @@ func score(input string) int {
 
 	inputLen := len(input)
 
-	if inputLen > 0 {
-		var firstByte byte
+	var firstByte byte
 
-		var lastByte byte
+	var lastByte byte
 
-		for i := 0; firstByte == 0 || lastByte == 0; i++ {
-			fByte := input[i]
-			lByte := input[inputLen-i-1]
+	for i := 0; firstByte == 0 || lastByte == 0; i++ {
+		fByte := input[i]
+		lByte := input[inputLen-i-1]
 
-			if firstByte == 0 {
-				if isByteANumber(fByte) {
-					firstByte = fByte
-				} else {
-					possibleKey := findPossibleKey(input, i, false)
+		if firstByte == 0 {
+			if isByteANumber(fByte) {
+				firstByte = fByte
+			} else {
+				possibleKey := findPossibleKey(input, i, false)
 
-					if possibleKey != "" {
-						val := isStringANumber(possibleKey)
+				if possibleKey != "" {
+					val := isStringANumber(possibleKey)
 
-						if val > 0 {
-							firstByte = val
-						}
-					}
-				}
-			}
-			if lastByte == 0 {
-				if isByteANumber(lByte) {
-					lastByte = lByte
-				} else {
-					possibleKey := findPossibleKey(input, i, true)
-
-					if possibleKey != "" {
-						val := isStringANumber(possibleKey)
-
-						if val > 0 {
-							lastByte = val
-						}
+					if val > 0 {
+						firstByte = val
 					}
 				}
 			}
 		}
+		if lastByte == 0 {
+			if isByteANumber(lByte) {
+				lastByte = lByte
+			} else {
+				possibleKey := findPossibleKey(input, i, true)
 
-		code := fmt.Sprintf("%c%c", firstByte, lastByte)
+				if possibleKey != "" {
+					val := isStringANumber(possibleKey)
 
-		codeInt, err := strconv.Atoi(code)
-
-		if err != nil {
-			fmt.Printf("Could not convert string to int: %s\n", code)
-		} else {
-			calibrationValue = codeInt
+					if val > 0 {
+						lastByte = val
+					}
+				}
+			}
 		}
+	}
+
+	code := fmt.Sprintf("%c%c", firstByte, lastByte)
+
+	codeInt, err := strconv.Atoi(code)
+
+	if err != nil {
+		fmt.Printf("Could not convert string to int: %s\n", code)
+	} else {
+		calibrationValue = codeInt
 	}
 
 	return calibrationValue
