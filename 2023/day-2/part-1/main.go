@@ -40,9 +40,7 @@ func totalScore(puzzle string) int {
 	lines := strings.Split(puzzle, "\n")
 
 	for i, line := range lines {
-		if len(line) > 0 {
-			totalScore += score(line, i+1)
-		}
+		totalScore += score(line, i+1)
 	}
 
 	return totalScore
