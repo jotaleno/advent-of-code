@@ -37,6 +37,6 @@ func TestScore(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		assert.Equal(t, c.expected, totalScore(c.input))
+		assert.Equal(t, c.expected, score(c.input))
 	}
 }

@@ -27,9 +27,24 @@ func totalScore(puzzle string) int {
 
 	lines := strings.Split(puzzle, "\n")
 
-	for _, line := range lines {
+	cardCounter := make(map[int]int)
+
+	for index, line := range lines {
 		winningNumbers, cardNumbers := splitLine(line)
-		totalScore += score(winningNumbers, cardNumbers)
+
+		id := index + 1
+
+		cardCounter[id]++
+
+		winningsCount := findWinningsCount(winningNumbers, cardNumbers)
+
+		for w := 1; w <= winningsCount; w++ {
+			cardCounter[id+w] += cardCounter[id]
+		}
+	}
+
+	for _, count := range cardCounter {
+		totalScore += count
 	}
 
 	return totalScore
@@ -45,8 +60,8 @@ func splitLine(line string) (string, string) {
 	return winningNumbers, cardNumbers
 }
 
-func score(winningNumbers string, cardNumbers string) int {
-	var points int
+func findWinningsCount(winningNumbers string, cardNumbers string) int {
+	var count int
 	var winningNumbersMap = make(map[string]int)
 
 	for _, w := range strings.Split(winningNumbers, " ") {
@@ -64,14 +79,10 @@ func score(winningNumbers string, cardNumbers string) int {
 			_, ok := winningNumbersMap[trimC]
 
 			if ok {
-				if points == 0 {
-					points = 1
-				} else {
-					points *= 2
-				}
+				count++
 			}
 		}
 	}
 
-	return points
+	return count
 }
