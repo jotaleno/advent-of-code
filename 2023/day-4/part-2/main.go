@@ -54,10 +54,7 @@ func splitLine(line string) (string, string) {
 	info := strings.Split(line, ":")
 	list := strings.Split(info[1], "|")
 
-	winningNumbers := list[0]
-	cardNumbers := list[1]
-
-	return winningNumbers, cardNumbers
+	return list[0], list[1]
 }
 
 func findWinningsCount(winningNumbers string, cardNumbers string) int {

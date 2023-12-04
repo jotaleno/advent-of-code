@@ -39,10 +39,7 @@ func splitLine(line string) (string, string) {
 	info := strings.Split(line, ":")
 	list := strings.Split(info[1], "|")
 
-	winningNumbers := list[0]
-	cardNumbers := list[1]
-
-	return winningNumbers, cardNumbers
+	return list[0], list[1]
 }
 
 func score(winningNumbers string, cardNumbers string) int {
@@ -50,7 +47,6 @@ func score(winningNumbers string, cardNumbers string) int {
 	var winningNumbersMap = make(map[string]int)
 
 	for _, w := range strings.Fields(winningNumbers) {
-
 		winningNumbersMap[w] = 1
 	}
 
