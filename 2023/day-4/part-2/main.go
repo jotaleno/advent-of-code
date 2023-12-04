@@ -64,23 +64,15 @@ func findWinningsCount(winningNumbers string, cardNumbers string) int {
 	var count int
 	var winningNumbersMap = make(map[string]int)
 
-	for _, w := range strings.Split(winningNumbers, " ") {
-		if (len(w)) > 0 {
-			trimW := strings.Trim(w, " ")
-
-			winningNumbersMap[trimW] = 1
-		}
+	for _, w := range strings.Fields(winningNumbers) {
+		winningNumbersMap[w] = 1
 	}
 
-	for _, c := range strings.Split(cardNumbers, " ") {
-		if (len(c)) > 0 {
-			trimC := strings.Trim(c, " ")
+	for _, c := range strings.Fields(cardNumbers) {
+		_, ok := winningNumbersMap[c]
 
-			_, ok := winningNumbersMap[trimC]
-
-			if ok {
-				count++
-			}
+		if ok {
+			count++
 		}
 	}
 
