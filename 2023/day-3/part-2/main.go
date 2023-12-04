@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -30,16 +31,30 @@ func main() {
 func totalScore(puzzle string) int {
 	var totalScore int
 
-	fmt.Println(puzzle)
-
 	lines := strings.Split(puzzle, "\n")
 	length := len(lines)
 
 	for y := 0; y < length; y++ {
 		for x := 0; x < length; x++ {
 			if isAsterisc(lines[y][x]) {
-				if isAdjacentToTwoNumbers(lines, y, x, length, length) {
+				isAdj, indexes := isAdjacentToTwoNumbers(lines, y, x, length, length)
 
+				if isAdj {
+					multiplication := 1
+
+					for _, index := range indexes {
+						str, _ := getNumber(lines[index.y], index.x)
+
+						n, err := strconv.Atoi(str)
+
+						if err != nil {
+							fmt.Printf("Could not convert string to int: %s\n", str)
+						} else {
+							multiplication *= n
+						}
+					}
+
+					totalScore += multiplication
 				}
 			}
 		}
@@ -48,85 +63,54 @@ func totalScore(puzzle string) int {
 	return totalScore
 }
 
-func getNumber(line string, index index) string {
-	var number string
+func getNumber(line string, xStart int) (string, [2]int) {
+	var leftX int
+	var rightX int
 
-	return number
+	for leftX = xStart; leftX >= 0 && isNumber(line[leftX]); {
+		leftX--
+	}
+
+	for rightX = xStart; rightX < len(line) && isNumber(line[rightX]); {
+		rightX++
+	}
+
+	return line[leftX+1 : rightX], [2]int{leftX, rightX}
 }
-func isAdjacentToTwoNumbers(puzzle []string, y int, x int, yLen int, xLen int) bool {
+
+func isAdjacentToTwoNumbers(puzzle []string, y int, x int, yLen int, xLen int) (bool, []index) {
 	var adjCounter int
 	var indexes []index
 
-	// up
-	if y-1 >= 0 {
-		if isNumber(puzzle[y-1][x]) {
-			indexes = append(indexes, index{y: y - 1, x: x})
-			adjCounter++
-		}
-	}
-	// up right
-	if x+1 < xLen && y-1 >= 0 {
-		if isNumber(puzzle[y-1][x+1]) {
-			indexes = append(indexes, index{y: y - 1, x: x + 1})
-			adjCounter++
-		}
-	}
+	for j := -1; j <= 1; j++ {
+		for i := -1; i <= 1; i++ {
+			if j != 0 || i != 0 {
+				if y+j >= 0 && y+j < yLen && x+i >= 0 && x+i < xLen {
+					if isNumber(puzzle[y+j][x+i]) {
+						var found bool
 
-	// right
-	if x+1 < xLen {
-		if isNumber(puzzle[y][x+1]) {
-			indexes = append(indexes, index{y: y, x: x + 1})
-			adjCounter++
+						for _, index := range indexes {
+							_, rg := getNumber(puzzle[index.y], index.x)
+
+							if index.y == y+j && (x+i >= rg[0] && x+i <= rg[1]) {
+								found = true
+							}
+						}
+
+						if !found {
+							indexes = append(indexes, index{y: y + j, x: x + i})
+							adjCounter++
+						}
+					}
+				}
+			}
 		}
 	}
-
-	// down right
-	if x+1 < xLen && y+1 < yLen {
-		if isNumber(puzzle[y+1][x+1]) {
-			indexes = append(indexes, index{y: y + 1, x: x + 1})
-			adjCounter++
-		}
-	}
-
-	// down
-	if y+1 < yLen {
-		if isNumber(puzzle[y+1][x]) {
-			indexes = append(indexes, index{y: y + 1, x: x})
-			adjCounter++
-		}
-	}
-
-	// down left
-	if x-1 >= 0 && y+1 < yLen {
-		if isNumber(puzzle[y+1][x-1]) {
-			indexes = append(indexes, index{y: y + 1, x: x + 1})
-			adjCounter++
-		}
-	}
-
-	// left
-	if x-1 >= 0 {
-		if isNumber(puzzle[y][x-1]) {
-			indexes = append(indexes, index{y: y, x: x - 1})
-			adjCounter++
-		}
-	}
-
-	// up left
-	if x-1 >= 0 && y-1 >= 0 {
-		if isNumber(puzzle[y-1][x-1]) {
-			indexes = append(indexes, index{y: y - 1, x: x - 1})
-			adjCounter++
-		}
-	}
-
-	fmt.Println(adjCounter)
 
 	if adjCounter == 2 {
-		fmt.Println(indexes)
-		return true
+		return true, indexes
 	} else {
-		return false
+		return false, nil
 	}
 }
 
