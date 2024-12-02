@@ -52,11 +52,7 @@ func isSafe(report []string) bool {
 		previousDiff := int(math.Abs(float64(currentNumber - previousNumber)))
 		nextDiff := int(math.Abs(float64(nextNumber - currentNumber)))
 
-		if previousDiff < MIN_DIFF || previousDiff > MAX_DIFF || nextDiff < MIN_DIFF || nextDiff > MAX_DIFF {
-			return false
-		}
-
-		if (currentNumber-previousNumber > 0 && nextNumber-currentNumber < 0) || (currentNumber-previousNumber < 0 && nextNumber-currentNumber > 0) {
+		if (previousDiff < MIN_DIFF || previousDiff > MAX_DIFF || nextDiff < MIN_DIFF || nextDiff > MAX_DIFF) || (currentNumber-previousNumber > 0 && nextNumber-currentNumber < 0) || (currentNumber-previousNumber < 0 && nextNumber-currentNumber > 0) {
 			return false
 		}
 	}
