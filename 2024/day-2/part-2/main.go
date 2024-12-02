@@ -12,7 +12,6 @@ const FILE_NAME = "input.txt"
 
 const MIN_DIFF = 1
 const MAX_DIFF = 3
-const MAX_RETRIES = 1
 
 func main() {
 	f, err := os.ReadFile(FILE_NAME)
